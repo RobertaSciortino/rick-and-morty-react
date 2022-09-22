@@ -1,6 +1,6 @@
 import character from "../../model/character";
 import CharacterStatus from "../../model/CharacterStatus";
-import Gender from "../../model/gender";
+import Gender from "../../model/Gender";
 import { API_LOCATION_URL } from "../constants";
 
 function characterParser(characterData) {
