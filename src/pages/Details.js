@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Container, Row, Col, Card, ListGroup, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCharacterDetails } from "../api/characterApi";
 import { getLocationDetails } from "../api/locationApi";
 import LocationDetails from "../components/LocationDetails";
+import { API_EPISODE_URL } from "../api/constants";
 
 import classes from '../style/details.module.css';
+import getEpisodes from "../api/episodeApi";
+import EpisodeDetails from "../components/EpisodeDetails";
 
 const Details = () => {
     const params = useParams();
@@ -14,6 +17,7 @@ const Details = () => {
     const [characterDetails, setCharacterDetails] = useState({});
     const [originLocationDetails, setOriginLocationDetails] = useState({});
     const [lastLocationDetails, setLastLocationDetails] = useState({});
+    const [episodeList, setEpisodeList] = useState([]);
 
     useEffect(() => {
         getCharacterDetails(params.id).then(details => {
@@ -22,13 +26,20 @@ const Details = () => {
             let locationIds = [];
             locationIds.push(details.originLocation.id, details.lastLocation.id);
 
+            let episodeIds = details.episode.map(episode => episode.split(`${API_EPISODE_URL}`)[1])
+
             getLocationDetails(locationIds)
             .then(locations => {
                 let originLocationData = locations.filter(location => location.id == details.originLocation.id || location.id == 0);
                 setOriginLocationDetails(originLocationData[0]);
 
-                let lastLocationData = locations.filter(location => location.id == details.lastLocation.id || location.id == 0);
+                let lastLocationData = locations.filter(location => location.id == details.lastLocation.id);
                 setLastLocationDetails(lastLocationData[0]);
+            });
+
+            getEpisodes(episodeIds)
+            .then(episodes => {
+                setEpisodeList(episodes);
             })
         })
     }, [params.id])
@@ -56,7 +67,12 @@ const Details = () => {
                             <LocationDetails title="Last known location" data={lastLocationDetails} />
                             <LocationDetails title="First seen in" data={originLocationDetails} />
 
-                            <Button variant="primary" className="text-uppercase border-0 mt-5" onClick={() => navigate('/')}>Back</Button>
+                            <EpisodeDetails title="Appeared on" data={episodeList} />
+
+                            <div className="text-end">
+                                <Button variant="primary" className="text-uppercase border-0 mt-5" onClick={() => navigate('/')}>Back</Button>
+                            </div>
+                            
                         </Card.Body>
                     </Card>
                 </Col>
