@@ -1,10 +1,11 @@
-import axios from "axios";
+import axios, { Axios } from "axios";
 import {API_CHARACTER_URL} from '../api/constants';
 import createPage from '../model/page';
 import characterParser from '../api/parser/CharacterParser';
+import character from "../model/character";
 
 function getCharactersPage(page) {
-    return axios.get(API_CHARACTER_URL + '?page=' + page)
+    return axios.get(`${API_CHARACTER_URL}?page=${page}`)
             .then(response => {
                 let total_count = response.data.info.count;
                 let items = response.data.results.map(result => characterParser(result))
@@ -17,5 +18,28 @@ function getCharactersPage(page) {
                 }
             })
 }
+function getCharacterDetails(id) {
+    return axios.get(`${API_CHARACTER_URL}${id}`)
+            .then(response => {
+                let parsedCharacter = characterParser(response.data);
+                return character(
+                    parsedCharacter.id,
+                    parsedCharacter.name,
+                    parsedCharacter.avatar,
+                    parsedCharacter.species,
+                    parsedCharacter.gender,
+                    parsedCharacter.status,
+                    parsedCharacter.originLocation,
+                    parsedCharacter.lastLocation,
+                    parsedCharacter.episode
+                )
+            })
+            .catch(error => {
+                throw {
+                    message: 'Error retrieving characters',
+                    statusCode: error.response.statusCode
+                }
+            })
+}
 
-export default getCharactersPage;
+export { getCharactersPage, getCharacterDetails };
