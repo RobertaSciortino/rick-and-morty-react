@@ -7,6 +7,13 @@ function locationParser(locationData) {
     let dimension = locationData.dimension;
     let residents = locationData.residents.length;
 
+    if (locationData.id === 0) {
+        name = 'unknown';
+        type = 'unknown';
+        dimension = 'unknown';
+        residents = 'unknown';
+    }
+
     return location(id, name, type, dimension, residents);
 }
 
