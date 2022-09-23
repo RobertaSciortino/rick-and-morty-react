@@ -20,27 +20,22 @@ const Details = () => {
     const [episodeList, setEpisodeList] = useState([]);
 
     useEffect(() => {
-        getCharacterDetails(params.id).then(details => {
-            setCharacterDetails(details);
+        getCharacterDetails(params.id).then(character => {
+            setCharacterDetails(character);
 
-            let locationIds = [];
-            locationIds.push(details.originLocation.id, details.lastLocation.id);
+            let locationIds = [character.originLocation.id, character.lastLocation.id];
 
-            let episodeIds = details.episode.map(episode => episode.split(`${API_EPISODE_URL}`)[1])
+            let episodeIds = character.episode.map(episode => episode.split(`${API_EPISODE_URL}`)[1])
 
-            getLocationDetails(locationIds)
-            .then(locations => {
-                let originLocationData = locations.filter(location => location.id == details.originLocation.id || location.id == 0);
+            getLocationDetails(locationIds).then(locations => {
+                let originLocationData = locations.filter(location => location.id == character.originLocation.id || location.id == 0);
                 setOriginLocationDetails(originLocationData[0]);
 
-                let lastLocationData = locations.filter(location => location.id == details.lastLocation.id);
+                let lastLocationData = locations.filter(location => location.id == character.lastLocation.id);
                 setLastLocationDetails(lastLocationData[0]);
             });
 
-            getEpisodes(episodeIds)
-            .then(episodes => {
-                setEpisodeList(episodes);
-            })
+            getEpisodes(episodeIds).then(episodes => setEpisodeList(episodes))
         })
     }, [params.id])
 
