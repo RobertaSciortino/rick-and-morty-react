@@ -12,6 +12,7 @@
     background-color: #f8f9fa;
 }
 
-.theme-color {
-    color: rebeccapurple;
+.card-title {
+    font-weight: bold;
+    color: #0b5ed7;
 }
