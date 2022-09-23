@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Card from "../components/CharacterCard";
-import getCharactersPage from '../api/characterApi';
+import { getCharactersPage } from '../api/characterApi';
 
 const Home = () => {
     let currentPage = 1;
@@ -11,7 +11,6 @@ const Home = () => {
         getCharactersPage(currentPage).then(page => {
             setCharacters([...page.items]);
         })
-        
     }, [])
 
     return (

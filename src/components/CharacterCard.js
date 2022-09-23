@@ -1,6 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import { Button, Card, ListGroup } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { characterActions } from "../store/character-slice";
+import { getCharacterDetails } from "../api/characterApi";
 
 function CharacterCard(props) {
+  const navigate = useNavigate();
+
   return (
     <Card bg="light" className="border-0">
       <Card.Img variant="top" src={props.data.avatar} />
@@ -25,7 +31,7 @@ function CharacterCard(props) {
         </ListGroup>
       </Card.Body>
       <Card.Footer bg="none" className="border-0 text-center bg-light">
-        <Button className="text-uppercase theme-bg border-0">Details</Button>
+        <Button variant="primary" className="text-uppercase border-0" onClick={() => navigate(`character/${props.data.id}`)}>Details</Button>
       </Card.Footer>
     </Card>
   );
