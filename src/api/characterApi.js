@@ -18,22 +18,9 @@ function getCharactersPage(page) {
                 }
             })
 }
-function getCharacterDetails(id) {
+function getCharacter(id) {
     return axios.get(`${API_CHARACTER_URL}${id}`)
-            .then(response => {
-                let parsedCharacter = characterParser(response.data);
-                return character(
-                    parsedCharacter.id,
-                    parsedCharacter.name,
-                    parsedCharacter.avatar,
-                    parsedCharacter.species,
-                    parsedCharacter.gender,
-                    parsedCharacter.status,
-                    parsedCharacter.originLocation,
-                    parsedCharacter.lastLocation,
-                    parsedCharacter.episode
-                )
-            })
+            .then(response => characterParser(response.data))
             .catch(error => {
                 throw {
                     message: 'Error retrieving characters',
@@ -42,4 +29,4 @@ function getCharacterDetails(id) {
             })
 }
 
-export { getCharactersPage, getCharacterDetails };
+export { getCharactersPage, getCharacter };

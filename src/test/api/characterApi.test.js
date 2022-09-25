@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getCharactersPage, getCharacterDetails } from "../../api/characterApi"
+import { getCharactersPage, getCharacter } from "../../api/characterApi"
 
 jest.mock('Axios');
 
@@ -110,7 +110,7 @@ test('testing character details', () => {
 
    axios.get.mockResolvedValueOnce(fakeCharacterDetailsJson);
 
-   getCharacterDetails(1).then(details => {
+   getCharacter(1).then(details => {
        let expectedResult = {
             "id": 361,
             "name": "Toxic Rick",
@@ -139,7 +139,7 @@ test('testing character details', () => {
 test('testing chatacter details error', () => {
     axios.get.mockRejectedValueOnce({response: { statusCode: 500 }})
 
-    getCharactersPage(1).catch(error => {
+    getCharacter(1).catch(error => {
         let expectedResult = {
             message: 'Error retrieving characters',
             statusCode: 500
