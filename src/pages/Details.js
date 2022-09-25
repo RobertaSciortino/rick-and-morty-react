@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Container, Row, Col, Card, ListGroup, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import { getCharacterDetails } from "../api/characterApi";
+import { getCharacter } from "../api/characterApi";
 import { getLocationDetails } from "../api/locationApi";
 import LocationDetails from "../components/LocationDetails";
 import { API_EPISODE_URL } from "../api/constants";
@@ -14,14 +14,14 @@ const Details = () => {
     const params = useParams();
     const navigate = useNavigate();
 
-    const [characterDetails, setCharacterDetails] = useState({});
+    const [character, setCharacter] = useState({});
     const [originLocationDetails, setOriginLocationDetails] = useState({});
     const [lastLocationDetails, setLastLocationDetails] = useState({});
     const [episodeList, setEpisodeList] = useState([]);
 
     useEffect(() => {
-        getCharacterDetails(params.id).then(character => {
-            setCharacterDetails(character);
+        getCharacter(params.id).then(character => {
+            setCharacter(character);
 
             let locationIds = [character.originLocation.id, character.lastLocation.id];
 
@@ -44,18 +44,18 @@ const Details = () => {
             <Row>
                 <Col md={{span: 10,  offset: 1}} lg={{span: 8, offset: 2}}>
                     <Card bg="light" className={`${classes.card} border-0 d-md-flex flex-row`}>
-                        <Card.Img variant="start" src={characterDetails.avatar} className="rounded-start"/>
+                        <Card.Img variant="start" src={character.avatar} className="rounded-start"/>
                         <Card.Body>
-                            <Card.Title className="text-uppercase title-details">{characterDetails.name}</Card.Title>
+                            <Card.Title className="text-uppercase title-details">{character.name}</Card.Title>
                             <ListGroup as="ul" className="font-14 mb-4">
                                 <ListGroup.Item as="li" className="rounded-0 border-top-0 border-start-0 border-end-0 ps-0 pe-0 text-overflow bg-light">
-                                    <strong className="text-uppercase">species:</strong> {characterDetails.species}
+                                    <strong className="text-uppercase">species:</strong> {character.species}
                                 </ListGroup.Item>
                                 <ListGroup.Item as="li" className="border-start-0 border-end-0 ps-0 pe-0 text-overflow bg-light">
-                                    <strong className="text-uppercase">gender:</strong> {characterDetails.gender}
+                                    <strong className="text-uppercase">gender:</strong> {character.gender}
                                 </ListGroup.Item>
                                 <ListGroup.Item as="li" className="rounded-0 border-start-0 border-end-0 ps-0 pe-0 text-overflow bg-light">
-                                    <strong className="text-uppercase">status:</strong> {characterDetails.status}
+                                    <strong className="text-uppercase">status:</strong> {character.status}
                                 </ListGroup.Item>
                             </ListGroup>                          
                             
