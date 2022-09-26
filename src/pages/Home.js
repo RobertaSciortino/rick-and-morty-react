@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Card from "../components/CharacterCard";
 import { getCharactersPage } from '../api/characterApi';
 import Loader from "../components/Loader";
+import useObserver, { useInterceptor } from "../hooks/useObserver";
 
 const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -32,20 +33,7 @@ const Home = () => {
         })
     }, [currentPage])
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(callbackFunction, options);
-
-        if(lastItemRef.current) {
-            observer.observe(lastItemRef.current);
-        }
-
-        return () => {
-            if(lastItemRef.current) {
-                observer.unobserve(lastItemRef.current);
-            }
-        }
-        
-    }, [characters])
+    const interceptor = useInterceptor(callbackFunction, options, lastItemRef, characters)
 
 
     return (
