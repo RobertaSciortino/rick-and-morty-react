@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-export function useInterceptor(callbackFunction, options, ref, characters) {
+export function useObserver(callbackFunction, options, ref, characters) {
     useEffect(() => {
         const observer = new IntersectionObserver(callbackFunction, options);
 
