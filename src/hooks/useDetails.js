@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getCharacter } from "../api/characterApi";
 import { getLocationDetails } from "../api/locationApi";
 import { API_EPISODE_URL } from "../api/constants";
@@ -7,7 +7,6 @@ import getEpisodes from "../api/episodeApi";
 
 export function useDetails() {
     const params = useParams();
-    const navigate = useNavigate();
 
     const [character, setCharacter] = useState({});
     const [originLocationDetails, setOriginLocationDetails] = useState({});
@@ -38,7 +37,6 @@ export function useDetails() {
         character,
         lastLocationDetails,
         originLocationDetails,
-        episodeList,
-        navigate
+        episodeList
     };
 }
